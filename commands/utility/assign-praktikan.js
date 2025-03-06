@@ -17,22 +17,8 @@ module.exports = {
     ),
   async execute(interaction) {
     try {
-      const userId = interaction.user.id;
-      
-      // Find the asdos with the given user ID
-      const asdosIndex = asdosData.findIndex(
-        (asdos) => asdos.userID === userId
-      );
-
-      if (asdosIndex === -1) {
-        await interaction.reply({
-          content: `You are not registered as an asdos! Your user ID: ${userId}`,
-          flags: MessageFlags.Ephemeral,
-        });
-        return;
-      }
-      
       const nim = interaction.options.getString("nim");
+      const userId = interaction.user.id;
       
       // Path to the asdos.json file
       const asdosFilePath = path.join(__dirname, "../../asdos.json");
@@ -46,19 +32,31 @@ module.exports = {
       if (!fs.existsSync(asdosFilePath)) {
         return interaction.reply({
           content: "No asdos found. Please add an asdos first.",
-          flags: MessageFlags.Ephemeral,
+          ephemeral: true,
         });
       } else {
         // Read existing data
         const fileContent = fs.readFileSync(asdosFilePath, "utf8");
         asdosData = JSON.parse(fileContent);
       }
+      
+      // NOW we can find the asdos with the given user ID
+      const asdosIndex = asdosData.findIndex(
+        (asdos) => asdos.userID === userId
+      );
+
+      if (asdosIndex === -1) {
+        return interaction.reply({
+          content: `You are not registered as an asdos! Your user ID: ${userId}`,
+          ephemeral: true,
+        });
+      }
 
       // Check if the praktikan file exists
       if (!fs.existsSync(praktikanFilePath)) {
         return interaction.reply({
           content: "Praktikan database not found!",
-          flags: MessageFlags.Ephemeral,
+          ephemeral: true,
         });
       }
       
@@ -71,21 +69,25 @@ module.exports = {
       if (!nimExists) {
         return interaction.reply({
           content: `Praktikan with NIM ${nim} doesn't exist in the master database!`,
-          flags: MessageFlags.Ephemeral,
+          ephemeral: true,
         });
       }
 
       // Check if this NIM is already in any praktikan array
       const alreadyExists = asdosData.some((asdos) =>
-        asdos.praktikan.includes(nim)
+        asdos.praktikan && Array.isArray(asdos.praktikan) && asdos.praktikan.includes(nim)
       );
 
       if (alreadyExists) {
-        await interaction.reply({
+        return interaction.reply({
           content: `Praktikan with NIM ${nim} is already registered!`,
-          flags: MessageFlags.Ephemeral,
+          ephemeral: true,
         });
-        return;
+      }
+
+      // Initialize praktikan array if it doesn't exist
+      if (!asdosData[asdosIndex].praktikan) {
+        asdosData[asdosIndex].praktikan = [];
       }
 
       // Add the NIM to the praktikan array of the specific asdos
@@ -94,17 +96,16 @@ module.exports = {
       // Write the updated data back to the file
       fs.writeFileSync(asdosFilePath, JSON.stringify(asdosData, null, 2));
 
-      await interaction.reply({
+      return interaction.reply({
         content: `Successfully added praktikan with NIM ${nim} to your praktikan list!`,
-        flags: MessageFlags.Ephemeral,
+        ephemeral: true,
       });
 
-      // 
     } catch (error) {
       console.error("Error adding praktikan:", error);
-      await interaction.reply({
+      return interaction.reply({
         content: "An error occurred while adding praktikan. Please try again.",
-        flags: MessageFlags.Ephemeral,
+        ephemeral: true,
       });
     }
   },
