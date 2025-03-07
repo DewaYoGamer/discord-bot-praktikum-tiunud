@@ -31,8 +31,7 @@ module.exports = {
       // Check if the asdos file exists
       if (!fs.existsSync(asdosFilePath)) {
         return interaction.reply({
-          content: "No asdos found. Please add an asdos first.",
-          ephemeral: true,
+          content: "No asdos found. Please add an asdos first."
         });
       } else {
         // Read existing data
@@ -47,8 +46,7 @@ module.exports = {
 
       if (asdosIndex === -1) {
         return interaction.reply({
-          content: `You are not registered as an asdos! Your user ID: ${userId}`,
-          ephemeral: true,
+          content: `You are not registered as an asdos! Your user ID: ${userId}`
         });
       }
 
@@ -56,7 +54,6 @@ module.exports = {
       if (!fs.existsSync(praktikanFilePath)) {
         return interaction.reply({
           content: "Praktikan database not found!",
-          ephemeral: true,
         });
       }
       
@@ -68,8 +65,7 @@ module.exports = {
       
       if (!nimExists) {
         return interaction.reply({
-          content: `Praktikan with NIM ${nim} doesn't exist in the master database!`,
-          ephemeral: true,
+          content: `Praktikan with NIM ${nim} doesn't exist in the master database!`
         });
       }
 
@@ -80,8 +76,7 @@ module.exports = {
 
       if (alreadyExists) {
         return interaction.reply({
-          content: `Praktikan with NIM ${nim} is already registered!`,
-          ephemeral: true,
+          content: `Praktikan with NIM ${nim} is already registered!`
         });
       }
 
@@ -97,15 +92,13 @@ module.exports = {
       fs.writeFileSync(asdosFilePath, JSON.stringify(asdosData, null, 2));
 
       return interaction.reply({
-        content: `Successfully added praktikan with NIM ${nim} to your praktikan list!`,
-        ephemeral: true,
+        content: `Successfully added praktikan with NIM ${nim} to your praktikan list!`
       });
 
     } catch (error) {
       console.error("Error adding praktikan:", error);
       return interaction.reply({
-        content: "An error occurred while adding praktikan. Please try again.",
-        ephemeral: true,
+        content: "An error occurred while adding praktikan. Please try again."
       });
     }
   },

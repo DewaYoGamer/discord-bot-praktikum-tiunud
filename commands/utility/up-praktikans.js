@@ -13,7 +13,7 @@ module.exports = {
                 .setDescription('Upload the list of praktikans')
                 .setRequired(true)),
     async execute(interaction) {
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply();
         
         try {
             // Get the attachment URL

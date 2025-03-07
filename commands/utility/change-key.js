@@ -28,8 +28,7 @@ module.exports = {
             asdosData = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
         } catch (error) {
             return interaction.reply({ 
-                content: "Failed to read the asdos data file.", 
-                ephemeral: true, 
+                content: "Failed to read the asdos data file.",  
                 flags: MessageFlags.Ephemeral 
             });
         }
@@ -37,8 +36,7 @@ module.exports = {
         // Find the asdos with the given user ID
         if (!Array.isArray(asdosData)) {
             return interaction.reply({ 
-                content: "Invalid asdos data format.", 
-                ephemeral: true, 
+                content: "Invalid asdos data format.",  
                 flags: MessageFlags.Ephemeral 
             });
         }
@@ -48,7 +46,6 @@ module.exports = {
         if (asdosIndex === -1) {
             return interaction.reply({
                 content: `You are not registered as an asdos! Your user ID: ${userId}`,
-                ephemeral: true,
                 flags: MessageFlags.Ephemeral
             });
         }
@@ -61,14 +58,12 @@ module.exports = {
         
         return interaction.reply({ 
             content: `Key updated successfully! Your new key is: **${key}**`, 
-            ephemeral: true, 
             flags: MessageFlags.Ephemeral 
         });
     } catch (error) {
         console.error("Error changing key:", error);
         return interaction.reply({ 
             content: "An error occurred while changing the key.", 
-            ephemeral: true, 
             flags: MessageFlags.Ephemeral 
         });
     }

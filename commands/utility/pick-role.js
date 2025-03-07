@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, MessageFlags } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 
@@ -32,7 +32,6 @@ module.exports = {
             if (!nim && !key) {
                 return interaction.reply({
                     content: 'Please provide either your NIM or an asdos key.',
-                    ephemeral: true
                 });
             }
 
@@ -42,7 +41,6 @@ module.exports = {
                     console.log('NIM not found in the database!');
                     return interaction.reply({
                         content: 'NIM not found in the database!',
-                        ephemeral: true
                     });
                 }
 
@@ -57,7 +55,6 @@ module.exports = {
                     if (key !== matchingAsdos.key) {
                         return interaction.reply({
                             content: 'The key you provided is incorrect.',
-                            ephemeral: true
                         });
                     }
 
@@ -69,7 +66,6 @@ module.exports = {
                     if (!role) {
                         return interaction.reply({
                             content: 'Role not found in this server! Please contact an administrator.',
-                            ephemeral: true
                         });
                     }
                     
@@ -77,7 +73,6 @@ module.exports = {
                     if (member.roles.cache.has(roleId)) {
                         return interaction.reply({
                             content: `You already have the **${role.name}** role.`,
-                            ephemeral: true
                         });
                     }
                     
@@ -86,13 +81,11 @@ module.exports = {
                     
                     return interaction.reply({
                         content: `You have been assigned to ${matchingAsdos.name}'s group based on your NIM!`,
-                        ephemeral: true
                     });
                 }
                 else {
                     return interaction.reply({
                         content: 'You are not registered as a praktikan!',
-                        ephemeral: true
                     });
                 }
             }
@@ -100,7 +93,6 @@ module.exports = {
             console.error(error);
             return interaction.reply({
                 content: 'There was an error assigning the role!',
-                ephemeral: true
             });
         }
     },
