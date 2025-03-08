@@ -27,7 +27,7 @@ for (const folder of commandFolders) {
 // Construct and prepare an instance of the REST module
 const rest = new REST().setToken(env.DISCORD_TOKEN);
 
-rest.put(Routes.applicationCommands(env.CLIENT_ID), { body: [] })
+rest.put(Routes.applicationGuildCommands(env.CLIENT_ID, env.GUILD_ID), { body: [] })
 	.then(() => console.log('Successfully deleted all application commands.'))
 	.catch(console.error);
 

@@ -47,8 +47,14 @@ module.exports = {
       const userID = interaction.user.id;
       const existingAsdos = asdosData.find((asdos) => asdos.userID === userID);
 
-      const fullname = interaction.options.getString("full-name");
-      const shortname = interaction.options.getString("short-name");
+      let fullname = interaction.options.getString("full-name");
+      fullname = fullname.split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
+      let shortname = interaction.options.getString("short-name");
+      if (shortname[0].toLowerCase() === shortname[0]) {
+        shortname = shortname[0].toUpperCase() + shortname.slice(1);
+      }
       const [group1, group2] = normalizeGroups(
         interaction.options.getInteger("group-number"),
         interaction.options.getInteger("group-number-second")

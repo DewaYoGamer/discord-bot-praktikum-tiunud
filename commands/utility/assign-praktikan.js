@@ -61,9 +61,9 @@ module.exports = {
       const praktikanData = JSON.parse(fs.readFileSync(praktikanFilePath, "utf8"));
       
       // Check if the NIM exists in praktikan.json
-      const nimExists = praktikanData.some(praktikan => praktikan.NIM === nim);
+      const praktikan = praktikanData.find(p => p.NIM === nim);
       
-      if (!nimExists) {
+      if (!praktikan) {
         return interaction.reply({
           content: `Praktikan with NIM ${nim} doesn't exist in the master database!`
         });
@@ -92,7 +92,7 @@ module.exports = {
       fs.writeFileSync(asdosFilePath, JSON.stringify(asdosData, null, 2));
 
       return interaction.reply({
-        content: `Successfully added praktikan with NIM ${nim} to your praktikan list!`
+        content: `Successfully added praktikan ${praktikan.name} (${nim}) to your praktikan list!`
       });
 
     } catch (error) {
